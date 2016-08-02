@@ -44,6 +44,11 @@ TradeStrategy::TradeStrategy(int serviceID, string logPath, int db, int serviceI
     _kRange = kRange;
     _rollbackCnt = 0;
     _zhuijiaMaxCnt = 10;
+
+    _warningLine = -1500;
+    _openLine = 0;
+    _nowLine = 0;
+    _canTrade = true;
 }
 
 TradeStrategy::~TradeStrategy()
@@ -140,8 +145,11 @@ void TradeStrategy::trade(MSG_TO_TRADE_STRATEGY msg)
     info << "|status3|" << status3;
     info << "|msgType|" << msg.msgType;
     info << "|forecastID|" << msg.forecastID;
+    info << "|canTrade|" << _canTrade;
     info << endl;
     info.close();
+
+    if (!_canTrade && (msg.type == MSG_TRADE_SELLOPEN || msg.type == MSG_TRADE_BUYCLOSE)) return;
 
     // 撤单直接发送
     if (msg.msgType == MSG_TRADE_ROLLBACK) {
@@ -251,6 +259,22 @@ void TradeStrategy::onSuccess(MSG_TO_TRADE_STRATEGY rsp)
     info.close();
 
     _clearTradeInfo(orderID);
+
+    if (order.action == TRADE_ACTION_BUYOPEN) {
+        _openLine = 0 - order.price;
+    }
+    if (order.action == TRADE_ACTION_SELLOPEN) {
+        _openLine = order.price;
+    }
+    if (order.action == TRADE_ACTION_SELLCLOSE) {
+        _nowLine = _openLine + order.price;
+    }
+    if (order.action == TRADE_ACTION_BUYOPEN) {
+        _nowLine = _openLine - order.price;
+    }
+
+    if (_nowLine < _warningLine)
+        _canTrade = false;
 
     // 主线单更改主状态
     if (_waitList.size() == 0) {

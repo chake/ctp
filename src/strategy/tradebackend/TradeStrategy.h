@@ -54,6 +54,12 @@ private:
     std::map<int, int> _zhuijiaCnt;
     int _zhuijiaMaxCnt;
 
+
+    double _warningLine;
+    double _openLine;
+    double _nowLine;
+    bool _canTrade;
+
     int _initTrade(int, int, int, string, double, int, bool, int, bool = false); // 初始化交易
     void _clearTradeInfo(int);
 

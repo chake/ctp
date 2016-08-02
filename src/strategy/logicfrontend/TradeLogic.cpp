@@ -710,7 +710,7 @@ void TradeLogic::_realAction(TickData tick)
                 _calculateDown();
                 if (_firstAction) {
                     _firstAction = false;
-                    if (_pUp2Down > _thresholdVibrate) {
+                    if (_pDown2Up > _thresholdVibrate) {
                         _sendMsg(MSG_TRADE_BUYOPEN, tick.price, false, 0, 1, TRADE_TYPE_FOK);
                     } else if (_pDown2Down > _thresholdTrend) { // 卖开
                         _sendMsg(MSG_TRADE_SELLOPEN, tick.price, false, 0, 1, TRADE_TYPE_FOK);

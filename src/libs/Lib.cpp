@@ -87,6 +87,19 @@ void Lib::sysReqLog(string logPath, string logName, int code)
     sysLogger.close();
 }
 
+void Lib::push2db(string logPath, string key, string data)
+{
+    ofstream logger;
+    int s = stoi(getDate("%S"));
+    s = s - s % 5;
+    string ss = s > 10 ? itos(s) : "0" + itos(s);
+    logPath = logPath + "PUSH_" + key + "_" + getDate("%Y%m%d_%H%M") + ss + ".log";
+    logger.open(logPath.c_str(), ios::app);
+    logger << data << endl;
+
+    logger.close();
+}
+
 
 void Lib::initInfoLogHandle(string logPath, ofstream & infoHandle, string iID)
 {
@@ -106,7 +119,6 @@ void Lib::initMarketLogHandle(string logPath, ofstream & handle)
     handle.open(logPath.c_str(), ios::app);
     handle << getDate("%Y%m%d-%H:%M:%S", true) << "|";
 }
-
 
 vector<string> Lib::split(const string& s, const string& delim)
 {

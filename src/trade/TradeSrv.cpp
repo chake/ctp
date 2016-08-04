@@ -97,7 +97,7 @@ void TradeSrv::onQryCommRate(CThostFtdcInstrumentOrderCommRateField * const rsp)
 
     // save data
     string data = "rate_" + iid + "_" + Lib::dtos(order) + "_" + Lib::dtos(cancel);
-    _store->push("ORDER_LOGS", data);
+    Lib::push2db(_logPath, "ORDER_LOGS", data);
 }
 
 void TradeSrv::trade(double price, int total, bool isBuy, bool isOpen, int orderID, string instrumnetID, int type)
@@ -190,7 +190,7 @@ void TradeSrv::trade(double price, int total, bool isBuy, bool isOpen, int order
                   Lib::itos(_frontID) + "_" + Lib::itos(_sessionID) + "_" + Lib::itos(_maxOrderRef) + "_" +
                   Lib::dtos(price) + "_" + Lib::itos((int)isBuy) + "_" + Lib::itos((int)isOpen) + "_" +
                   time + "_" + instrumnetID;
-    _store->push("ORDER_LOGS", data);
+    Lib::push2db(_logPath, "ORDER_LOGS", data);
 }
 
 void TradeSrv::onTraded(CThostFtdcTradeField * const rsp)
@@ -248,7 +248,7 @@ void TradeSrv::onTraded(CThostFtdcTradeField * const rsp)
     string time = Lib::getDate("%Y/%m/%d-%H:%M:%S", true);
     string data = "traded_" + string(rsp->OrderRef) + "_" + Lib::itos(_frontID) + "_" + Lib::itos(_sessionID) + "_" +
                   string(rsp->TradeDate) + "_" + string(rsp->TradeTime) + "_" + time + "_" + Lib::dtos(rsp->Price);
-    _store->push("ORDER_LOGS", data);
+    Lib::push2db(_logPath, "ORDER_LOGS", data);
 }
 
 void TradeSrv::onOrderRtn(CThostFtdcOrderField * const rsp)
@@ -295,7 +295,7 @@ void TradeSrv::onOrderRtn(CThostFtdcOrderField * const rsp)
     string data = "orderRtn_" + string(rsp->OrderRef) + "_" + Lib::itos(_frontID) + "_" + Lib::itos(_sessionID) + "_" +
                   string(rsp->InsertDate) + "_" + string(rsp->InsertTime) + "_" + time + "_" +
                   str;
-    _store->push("ORDER_LOGS", data);
+    Lib::push2db(_logPath, "ORDER_LOGS", data);
 }
 
 void TradeSrv::cancel(int orderID)
@@ -412,7 +412,7 @@ void TradeSrv::onCancel(CThostFtdcOrderField * const rsp)
     string data = "orderRtn_" + string(rsp->OrderRef) + "_" + Lib::itos(_frontID) + "_" + Lib::itos(_sessionID) + "_" +
                   string(rsp->InsertDate) + "_" + string(rsp->InsertTime) + "_" + time + "_" +
                   str + "_" + tickStr ;
-    _store->push("ORDER_LOGS", data);
+    Lib::push2db(_logPath, "ORDER_LOGS", data);
 }
 
 void TradeSrv::onCancelErr(CThostFtdcInputOrderActionField * const rsp, CThostFtdcRspInfoField * const errInfo)

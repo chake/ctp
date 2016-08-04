@@ -103,7 +103,7 @@ void TradeSrv::onQryCommRate(CThostFtdcInstrumentOrderCommRateField * const rsp)
 void TradeSrv::trade(double price, int total, bool isBuy, bool isOpen, int orderID, string instrumnetID, int type)
 {
     if (_isOrderDealed(orderID)) return;
-    usleep(1500);
+    // usleep(1500);
     _initOrder(orderID, instrumnetID);
 
     TThostFtdcOffsetFlagEnType flag = THOST_FTDC_OFEN_Open;
@@ -302,7 +302,7 @@ void TradeSrv::cancel(int orderID)
 {
     if (_isOrderCanceled(orderID)) return;
 
-    usleep(1500);
+    // usleep(1500);
 
     int orderRef = _getOrderRefByID(orderID);
     if (orderRef <= 0) {

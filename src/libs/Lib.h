@@ -43,6 +43,8 @@ public:
     static string tickData2String(TickData tick);
     static TickData string2TickData(string str);
 
+    static void push2db(string, string, string);
+
     Lib();
     ~Lib();
 

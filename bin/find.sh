@@ -13,3 +13,4 @@ ps aux | grep tick.php | grep -v grep
 ps aux | grep readHistoryKLine.php | grep -v grep
 ps aux | grep order.php | grep -v grep
 ps aux | grep kLine.php | grep -v grep
+ps aux | grep push2db.php | grep -v grep
